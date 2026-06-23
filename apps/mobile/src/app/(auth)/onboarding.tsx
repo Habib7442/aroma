@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   Dimensions,
-  StyleSheet,
   Pressable,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -53,28 +52,28 @@ export default function OnboardingScreen() {
 
   const renderSlide = ({ item }: { item: OnboardingSlide }) => {
     return (
-      <View style={styles.slideContainer}>
+      <View className="flex-1 justify-start" style={{ width: SCREEN_WIDTH }}>
         {/* Full-width Image Section */}
-        <View style={styles.imageContainer}>
+        <View className="overflow-hidden rounded-b-[32px]" style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.56 }}>
           <Image
             source={item.image}
-            style={styles.slideImage}
+            style={{ width: '100%', height: '100%' }}
             contentFit="cover"
             transition={300}
           />
         </View>
 
         {/* Text Section (Left-aligned details matching reference image) */}
-        <View style={styles.textContainer}>
+        <View className="px-6 mt-7">
           <Text 
-            className="font-display text-4xl font-extrabold text-primary tracking-tight"
-            style={styles.slideTitle}
+            className="font-rubik-bold text-4xl text-primary tracking-tight"
+            style={{ lineHeight: 44, fontStyle: 'normal' }}
           >
             {item.title}
           </Text>
           <Text 
-            className="font-body text-base text-on-surface-variant/80 mt-3 leading-6"
-            style={styles.slideDescription}
+            className="font-rubik-regular text-base text-on-surface-variant/80 mt-3"
+            style={{ lineHeight: 24, fontStyle: 'normal' }}
           >
             {item.description}
           </Text>
@@ -86,22 +85,30 @@ export default function OnboardingScreen() {
   const isLastSlide = currentIndex === onboardingSlides.length - 1;
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, backgroundColor: '#f1fcf5' }}>
       <StatusBar barStyle="light-content" backgroundColor="#1d4626" />
       
       {/* Top notch / Status Bar Safe Area Block in Dark Hunter Green */}
       <SafeAreaView edges={['top']} style={{ backgroundColor: '#1d4626' }} />
 
       {/* Main Content Area */}
-      <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.contentSafeArea}>
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: '#f1fcf5' }}>
         {/* Absolute positioned Skip Button overlayed on top of the image */}
         {!isLastSlide && (
-          <View style={styles.skipContainer}>
+          <View className="absolute top-4 right-5 z-10">
             <Pressable 
               onPress={handleFinish}
-              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+              style={({ pressed }) => ({
+                paddingVertical: 6,
+                paddingHorizontal: 16,
+                borderRadius: 20,
+                backgroundColor: '#ffffffaa',
+                borderWidth: 1,
+                borderColor: '#1d462615',
+                opacity: pressed ? 0.6 : 1,
+              })}
             >
-              <Text className="font-body text-sm font-bold text-primary/75">
+              <Text className="font-rubik-bold text-sm text-primary/75" style={{ fontStyle: 'normal' }}>
                 Skip
               </Text>
             </Pressable>
@@ -119,31 +126,30 @@ export default function OnboardingScreen() {
           showsHorizontalScrollIndicator={false}
           onScroll={handleScroll}
           scrollEventThrottle={16}
-          style={styles.flatList}
+          style={{ flex: 1 }}
         />
 
         {/* Footer controls */}
-        <View style={styles.footerContainer}>
+        <View className="px-6 w-full items-center bg-transparent pb-5">
           {/* Pagination Dots */}
-          <View style={styles.paginationRow}>
+          <View className="flex-row justify-start self-start px-1 h-2.5 mb-7">
             {onboardingSlides.map((_, index) => {
               const isActive = index === currentIndex;
               return (
                 <View
                   key={index}
-                  style={[
-                    styles.dot,
-                    isActive 
-                      ? [styles.activeDot, { backgroundColor: '#1d4626' }] 
-                      : styles.inactiveDot
-                  ]}
+                  className="h-2 rounded-full mx-[3px]"
+                  style={{
+                    width: isActive ? 22 : 8,
+                    backgroundColor: isActive ? '#1d4626' : '#dae5df',
+                  }}
                 />
               );
             })}
           </View>
 
-          {/* CTA Button - Pill shaped styled with Hunter Green theme background */}
-          <View style={styles.buttonWrapper}>
+          {/* CTA Button - Rounded rectangle matching primary style */}
+          <View className="w-full">
             <Button
               title={isLastSlide ? "Get Started" : "Continue"}
               onPress={handleNext}
@@ -155,92 +161,3 @@ export default function OnboardingScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f1fcf5', // Hunter Green light background theme
-  },
-  contentSafeArea: {
-    flex: 1,
-    backgroundColor: '#f1fcf5',
-  },
-  skipContainer: {
-    position: 'absolute',
-    top: 16,
-    right: 20,
-    zIndex: 10,
-  },
-  skipBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    backgroundColor: '#ffffffaa',
-    borderWidth: 1,
-    borderColor: '#1d462615',
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  flatList: {
-    flex: 1,
-  },
-  slideContainer: {
-    width: SCREEN_WIDTH,
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-  imageContainer: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.56,
-    overflow: 'hidden',
-    borderBottomLeftRadius: 32, // Soft rounded borders for visual premium touch
-    borderBottomRightRadius: 32,
-  },
-  slideImage: {
-    width: '100%',
-    height: '100%',
-  },
-  textContainer: {
-    paddingHorizontal: 24,
-    marginTop: 28,
-  },
-  slideTitle: {
-    fontFamily: 'Rubik-ExtraBold',
-    lineHeight: 44,
-    color: '#1d4626', // Hunter green
-  },
-  slideDescription: {
-    fontFamily: 'Rubik-Regular',
-  },
-  footerContainer: {
-    paddingHorizontal: 24,
-    width: '100%',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    paddingBottom: 20,
-  },
-  paginationRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start', // aligned left
-    alignSelf: 'flex-start', // matches left text layout
-    paddingHorizontal: 4,
-    height: 10,
-    marginBottom: 28,
-  },
-  dot: {
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 3,
-  },
-  activeDot: {
-    width: 22,
-  },
-  inactiveDot: {
-    width: 8,
-    backgroundColor: '#dae5df', // neutral dim gray
-  },
-  buttonWrapper: {
-    width: '100%',
-  },
-});
