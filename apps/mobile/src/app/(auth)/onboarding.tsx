@@ -9,6 +9,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
+  StatusBar,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -82,65 +83,73 @@ export default function OnboardingScreen() {
   const isLastSlide = currentIndex === onboardingSlides.length - 1;
 
   return (
-    <SafeAreaView style={styles.container} className="bg-background">
-      {/* Absolute positioned Skip Button overlayed on top of the image */}
-      {!isLastSlide && (
-        <View style={[styles.skipContainer, { top: insets.top > 0 ? insets.top + 16 : 24 }]}>
-          <Pressable 
-            onPress={handleFinish}
-            style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
-          >
-            <Text className="font-body text-sm font-bold text-primary/75">
-              Skip
-            </Text>
-          </Pressable>
-        </View>
-      )}
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1d4626" />
+      
+      {/* Top notch / Status Bar Safe Area Block in Dark Hunter Green */}
+      <SafeAreaView edges={['top']} style={{ backgroundColor: '#1d4626' }} />
 
-      {/* Main FlatList for Slides */}
-      <FlatList
-        ref={flatListRef}
-        data={onboardingSlides}
-        renderItem={renderSlide}
-        keyExtractor={(item) => item.id}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        style={styles.flatList}
-      />
+      {/* Main Content Area */}
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.contentSafeArea}>
+        {/* Absolute positioned Skip Button overlayed on top of the image */}
+        {!isLastSlide && (
+          <View style={styles.skipContainer}>
+            <Pressable 
+              onPress={handleFinish}
+              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+            >
+              <Text className="font-body text-sm font-bold text-primary/75">
+                Skip
+              </Text>
+            </Pressable>
+          </View>
+        )}
 
-      {/* Footer controls */}
-      <View style={styles.footerContainer}>
-        {/* Pagination Dots */}
-        <View style={styles.paginationRow}>
-          {onboardingSlides.map((_, index) => {
-            const isActive = index === currentIndex;
-            return (
-              <View
-                key={index}
-                style={[
-                  styles.dot,
-                  isActive 
-                    ? [styles.activeDot, { backgroundColor: '#1d4626' }] 
-                    : styles.inactiveDot
-                ]}
-              />
-            );
-          })}
-        </View>
+        {/* Main FlatList for Slides */}
+        <FlatList
+          ref={flatListRef}
+          data={onboardingSlides}
+          renderItem={renderSlide}
+          keyExtractor={(item) => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          style={styles.flatList}
+        />
 
-        {/* CTA Button - Pill shaped styled with Hunter Green theme background */}
-        <View style={styles.buttonWrapper}>
-          <Button
-            title={isLastSlide ? "Get Started" : "Continue"}
-            onPress={handleNext}
-            hideChevron={true}
-          />
+        {/* Footer controls */}
+        <View style={styles.footerContainer}>
+          {/* Pagination Dots */}
+          <View style={styles.paginationRow}>
+            {onboardingSlides.map((_, index) => {
+              const isActive = index === currentIndex;
+              return (
+                <View
+                  key={index}
+                  style={[
+                    styles.dot,
+                    isActive 
+                      ? [styles.activeDot, { backgroundColor: '#1d4626' }] 
+                      : styles.inactiveDot
+                  ]}
+                />
+              );
+            })}
+          </View>
+
+          {/* CTA Button - Pill shaped styled with Hunter Green theme background */}
+          <View style={styles.buttonWrapper}>
+            <Button
+              title={isLastSlide ? "Get Started" : "Continue"}
+              onPress={handleNext}
+              hideChevron={true}
+            />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -149,8 +158,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f1fcf5', // Hunter Green light background theme
   },
+  contentSafeArea: {
+    flex: 1,
+    backgroundColor: '#f1fcf5',
+  },
   skipContainer: {
     position: 'absolute',
+    top: 16,
     right: 20,
     zIndex: 10,
   },
