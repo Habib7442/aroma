@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 
 import Button from '@/components/ui/button';
@@ -82,10 +82,10 @@ export default function OnboardingScreen() {
   const isLastSlide = currentIndex === onboardingSlides.length - 1;
 
   return (
-    <View style={styles.container} className="bg-background">
-      {/* Absolute positioned Skip Button at top right (Premium UI touch) */}
+    <SafeAreaView style={styles.container} className="bg-background">
+      {/* Absolute positioned Skip Button overlayed on top of the image */}
       {!isLastSlide && (
-        <View style={[styles.skipContainer, { top: insets.top + 12 }]}>
+        <View style={[styles.skipContainer, { top: insets.top > 0 ? insets.top + 16 : 24 }]}>
           <Pressable 
             onPress={handleFinish}
             style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
@@ -112,7 +112,7 @@ export default function OnboardingScreen() {
       />
 
       {/* Footer controls */}
-      <View style={[styles.footerContainer, { paddingBottom: insets.bottom + 20 }]}>
+      <View style={styles.footerContainer}>
         {/* Pagination Dots */}
         <View style={styles.paginationRow}>
           {onboardingSlides.map((_, index) => {
@@ -140,7 +140,7 @@ export default function OnboardingScreen() {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     backgroundColor: 'transparent',
+    paddingBottom: 20,
   },
   paginationRow: {
     flexDirection: 'row',

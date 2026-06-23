@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     height: 56,
-    borderRadius: 9999, // pill-shaped
+    borderRadius: 16, // rounded rectangle matching card radius
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
