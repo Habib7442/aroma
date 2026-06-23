@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Expo / React Native
+.expo/
+dist/
+web-build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js build output
+.next/
+out/
+
+# EAS CLI
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Supabase
+.supabase/
+supabase/.temp/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Turborepo
+.turbo/

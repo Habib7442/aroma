@@ -1,0 +1,26 @@
+{
+  "name": "aroma",
+  "private": true,
+  "workspaces": [
+    "apps/mobile",
+    "packages/*"
+  ],
+  "packageManager": "npm@10.8.2",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "mobile": "npm run start --workspace=mobile"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "prettier": "^3.8.4",
+    "supabase": "^2.107.0",
+    "turbo": "^2.9.18",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "lightningcss": "1.30.1"
+  }
+}

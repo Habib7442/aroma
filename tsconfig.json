@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@aroma/shared": ["packages/shared/src"],
+      "@aroma/types": ["packages/types/src/database.types.ts"]
+    },
+    "types": []
+  },
+  "files": [
+    "packages/shared/src/index.ts",
+    "packages/types/src/database.types.ts"
+  ]
+}
