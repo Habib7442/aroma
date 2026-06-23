@@ -72,7 +72,10 @@ export default function OnboardingScreen() {
           >
             {item.title}
           </Text>
-          <Text className="font-body text-base text-on-surface-variant/80 mt-3 leading-6">
+          <Text 
+            className="font-body text-base text-on-surface-variant/80 mt-3 leading-6"
+            style={styles.slideDescription}
+          >
             {item.description}
           </Text>
         </View>
@@ -203,8 +206,12 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
   slideTitle: {
+    fontFamily: 'Rubik-ExtraBold',
     lineHeight: 44,
     color: '#1d4626', // Hunter green
+  },
+  slideDescription: {
+    fontFamily: 'Rubik-Regular',
   },
   footerContainer: {
     paddingHorizontal: 24,
